@@ -1,0 +1,42 @@
+name: git-ci-cd-project
+
+services: 
+  web: 
+    build: .
+    container_name: web-server
+    ports: 
+      - "80:80"
+    volumes:
+      - .:/var/www/html   # 웹 파일은 현재 폴더(.)의 파일들로 안전하게 매핑
+    networks:
+      - ci-cd-net
+
+  db:
+    image: mysql:8.0
+    container_name: db-server
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql  # DB 데이터는 별도의 격리된 폴더에 저장
+    networks:
+      - ci-cd-net
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8000:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+    networks:
+      - ci-cd-net
+
+networks:
+  ci-cd-net:
+    driver: bridge

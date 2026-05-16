@@ -1,0 +1,6 @@
+FROM php:8.2-apache
+
+COPY . /var/www/html/
+
+#PDO 확장모듈 설치 및 활성화
+RUN docker-php-ext-install pdo_mysql
