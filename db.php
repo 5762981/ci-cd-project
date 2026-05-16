@@ -3,7 +3,7 @@
 $host = "db";
 $dbname = "my_site";
 $username = "root";
-$password = "awdr0927168@";
+$password = "1234";
 
 try {
     $pdo = new PDO(
